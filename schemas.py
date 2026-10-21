@@ -1,28 +1,30 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 
-class CatalogoItem(BaseModel):
-    id: int
-    nombre: str
+# Esquema para poblar selectores en el frontend
+class CatalogosResponse(BaseModel):
+    categorias: List[dict]
+    medidas: List[dict]
+    ludotecas: List[dict]
 
-class ProductoCreate(BaseModel):
-    nombre: str
-    descripcion: Optional[str] = None
-    precio_venta: float
+# Datos recibidos al registrar un juego/snack
+class ProductCreate(BaseModel):
+    name: str
+    price: float
+    id_categoria: int
     id_medida: int
-    id_tipo_producto: int
-    id_polleria: int
-    stock_inicial: float
+    id_ludoteca: int = 1
+    stock_inicial: int
     image_url: Optional[str] = None
 
-class ProductoRead(BaseModel):
-    id_producto: int
-    nombre: str
-    descripcion: Optional[str]
-    precio_venta: float
+# Datos devueltos combinando las 5 tablas para la tabla en Vercel
+class ProductRead(BaseModel):
+    id: int
+    name: str
+    price: float
     categoria: str
     medida: str
-    stock_actual: float
-    image_url: Optional[str]
+    stock_actual: int
+    image_url: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
